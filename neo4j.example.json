@@ -1,0 +1,14 @@
+{
+    "DEFAULT": {
+        "uri": "bolt://localhost:7687",
+        "username": "YOUR_USERNAME",
+        "password": "YOUR_PASSWORD",
+        "database": "YOUR_DATABASE"
+    },
+    "aura": {
+        "uri": "neo4j+s://YOUR_AURA_URI.databases.neo4j.io",
+        "username": "YOUR_AURA_USERNAME",
+        "password": "YOUR_AURA_PASSWORD",
+        "database": "YOUR_AURA_DATABASE"
+    }
+}
