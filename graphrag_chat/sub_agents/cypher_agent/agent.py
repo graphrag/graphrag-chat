@@ -7,6 +7,7 @@ from graphrag_chat.models import by_role
 
 from .tools import (
     list_graphs,
+    refresh_graphs,
     graph_is_ready,
     get_physical_schema, 
     read_neo4j_cypher,
@@ -23,7 +24,7 @@ cypher_agent = Agent(
     description="Provides acccess to a Neo4j database through Cypher queries.", # Crucial for delegation later
     instruction=return_instructions_cypher(),
 
-    tools=[list_graphs, graph_is_ready, get_physical_schema, read_neo4j_cypher, write_neo4j_cypher], # Make the tool available to this agent
+    tools=[list_graphs, refresh_graphs, graph_is_ready, get_physical_schema, read_neo4j_cypher, write_neo4j_cypher], # Make the tool available to this agent
 )
 
 # Export the root agent so adk can find it

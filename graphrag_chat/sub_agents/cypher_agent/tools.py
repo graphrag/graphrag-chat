@@ -12,8 +12,16 @@ from graphrag_chat.neo4j_for_adk import (
 
 
 async def list_graphs() -> List[str]:
-    return Neo4jGraphCatalog.get_instance().list_graphs()
+    """Lists available named Neo4j graphs.
+    """
+    return Neo4jGraphCatalog.list_graphs()
 
+async def refresh_graphs():
+    """Refreshes the known Neo4j connections.
+        This can be useful to re-establish connections 
+        which have dropped or failed.
+    """
+    return Neo4jGraphCatalog.refresh()
 
 async def graph_is_ready(graph_name: str):
     """Tool to check that the named Neo4j graph is ready.
@@ -22,7 +30,7 @@ async def graph_is_ready(graph_name: str):
     Args:
         graph_name: The name of the Neo4j graph to check.
     """
-    graphdb = Neo4jGraphCatalog.get_instance().get_graphdb(graph_name)
+    graphdb = Neo4jGraphCatalog.get_graphdb(graph_name)
     results = graphdb.send_query("RETURN 'Neo4j is Ready!' as message")
     return results
 
@@ -37,7 +45,7 @@ async def get_physical_schema(graph_name: str) -> Dict[str, Any]:
         The schema is returned as a JSON object containing a description
         of the node labels and relationship types.
     """
-    graphdb = Neo4jGraphCatalog.get_instance().get_graphdb(graph_name)
+    graphdb = Neo4jGraphCatalog.get_graphdb(graph_name)
     driver = graphdb.get_direct_driver()
     
     try:
@@ -67,7 +75,7 @@ async def read_neo4j_cypher(
     if is_write_query(query):
         return tool_error("Only MATCH queries are allowed for read-query")
 
-    graphdb = Neo4jGraphCatalog.get_instance().get_graphdb(database)
+    graphdb = Neo4jGraphCatalog.get_graphdb(database)
     results = graphdb.send_query(query, params)
     return results
 
@@ -88,6 +96,6 @@ async def write_neo4j_cypher(
         A list of dictionaries containing the results of the query.
         Returns an empty list "[]" if no results are found.
     """
-    graphdb = Neo4jGraphCatalog.get_instance().get_graphdb(database)
+    graphdb = Neo4jGraphCatalog.get_graphdb(database)
     results = graphdb.send_query(query, params)
     return results

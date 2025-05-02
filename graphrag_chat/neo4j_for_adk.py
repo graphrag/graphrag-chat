@@ -140,15 +140,21 @@ class Neo4jGraphCatalog:
         db = catalog.get_graphdb('name')
     """
     _instance: 'Neo4jGraphCatalog' = None
+    _settings: None
     _graph_to_database: dict[str, Neo4jForADK] = {}
     _initialized = False
 
     def __init__(self, settings: Dict[str, Neo4jConnectionSettings]):
         if Neo4jGraphCatalog._initialized:
             return
-        for name, neo4j_settings in settings.items():
-            self._graph_to_database[name] = Neo4jForADK(neo4j_settings)
+        self._settings = settings
+        self._refresh()
         Neo4jGraphCatalog._initialized = True
+
+    def _refresh(self):
+        self._graph_to_database = {}
+        for name, neo4j_settings in self._settings.items():
+            self._graph_to_database[name] = Neo4jForADK(neo4j_settings)
 
     @classmethod
     def initialize(cls, settings: Dict[str, Neo4jConnectionSettings]):
@@ -177,3 +183,7 @@ class Neo4jGraphCatalog:
         """List all available named graphs."""
         return list(cls.get_instance()._graph_to_database.keys())
 
+    @classmethod
+    def refresh(cls):
+        """List all available named graphs."""
+        cls.get_instance()._refresh()
