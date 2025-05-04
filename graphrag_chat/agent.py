@@ -7,7 +7,7 @@ from google.adk.models.lite_llm import LiteLlm
 
 from .prompts import return_instructions_root
 from .models import by_role
-from .tools import set_user, get_user
+from .tools import set_speaker, get_speaker, add_memory, search_memory
 from .sub_agents import cypher_agent, agent_smith
 from .neo4j_for_adk import Neo4jGraphCatalog
 
@@ -33,7 +33,7 @@ graphrag_chat_agent = Agent(
     description="Hosts a chat among multiple sub-agents, each with unique identities and knowledge.", # Crucial for delegation later
     
     instruction=return_instructions_root(),
-    tools=[set_user, get_user], # Make the tool available to this agent
+    tools=[set_speaker, get_speaker, add_memory, search_memory], 
     sub_agents=[cypher_agent, agent_smith],
     before_agent_callback=setup_before_agent_call,
 )

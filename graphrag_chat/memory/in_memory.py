@@ -1,22 +1,21 @@
 
 from google.adk.events import Event
 from google.adk.sessions import Session
-from google.adk.memory.base_memory_service import BaseMemoryService
+# from google.adk.memory.base_memory_service import BaseMemoryService
 from google.adk.memory.base_memory_service import MemoryResult
 from google.adk.memory.base_memory_service import SearchMemoryResponse
 
+from .graph_memory_service import GraphMemoryService
 
-class Neo4jMemoryService(BaseMemoryService):
-  """An in-memory memory service for prototyping purpose only.
-
-  Uses keyword matching instead of semantic search.
+class InMemoryService(GraphMemoryService):
+  """An in-memory service to be used as a tool. NOT based on the ADK BaseMemoryService.
   """
 
   def __init__(self):
     self.session_events: dict[str, list[Event]] = {}
     """keys are app_name/user_id/session_id"""
 
-  def add_session_to_memory(self, session: Session):
+  def add_memory(self, session: Session):
     key = f'{session.app_name}/{session.user_id}/{session.id}'
     self.session_events[key] = [
         event for event in session.events if event.content
