@@ -1,6 +1,24 @@
-
+# GraphRAG Chat
 Moderated multi-agent group chat.
 
+- top-level agent routes questions to sub-agents by name or speciality
+- top-level agent includes multi-memory delegation
+- all memories saved to each memory implementation
+- sub-agents can select which memory implementation to read from
+- a Neo4j graph catalog is available for read/write to multiple knowledge graphs
+
+Agents:
+```
+graphrag_chat_agent_v1 (root agent)
+│
+├── cypher_agent: direct read/write access to available knowledge graphs
+│
+├── agent_smith: Neo4j product specialist
+│   └── (memory: in-memory service. TBD migrate to simple KG memory)
+│
+└── new_agent: Give them a fun name and topical expertise
+      └── (memory: note the memory impl)
+```
 
 ## Developer Notes
 
